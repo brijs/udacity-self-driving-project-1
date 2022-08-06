@@ -82,6 +82,16 @@ ${GEN_INFERENCE_VIDEO} --labelmap_path label_map.pbtxt \
 
 ## Dataset
 ### Dataset Analysis
+Visualizing random images showed the variability of the environmnet and objects in the dataset - from clear day to rainy & night conditions, low traffic to high traffic, multiple pedestrians. In general, cyclists seem to be fewer.
+
+![Random Images](screenshots/EDA_1.PNG)
+Figure 1: Random Images from dataset
+
+Vehicle boxes were in a variety of sizes depending on the vehicle itself(large trucks vs small cars) as well as the proximity of the vehicle. In order to inform the choise of aspect ratios to use for initializing anchor boxes, I generated a **distribution (histogram)** of aspect ratios across a random sample of the data. 
+
+![Aspect Ratios Histogram](screenshots/aspect_ratio_histogram.jpg)
+Figure 2: Aspect Ratios Distribution
+
 ### Cross-Validation
 
 ## Training
@@ -97,10 +107,10 @@ Some observations:
  This chart below shows the **reference** run (and also **experiment0** run, with Adam optimizer & additional aspect ratios. (*Note - experiment0 is included alongside reference to indicate the improvement. experiment1 and 2 are an order(or 2) of mangitude better so they are plotted separately below*)
 
 ![Eval](screenshots/Loss_ref_exp0.jpg)
-Figure: Reference & Experiment0 Loss
+Figure 3: Reference & Experiment0 Loss
 
 ![Eval](screenshots/ref_eval_output.jpg)
-Figure: Reference run Evaluation output
+Figure 4: Reference run Evaluation output
 
 ### Improvements
 
@@ -124,7 +134,7 @@ Based on EDA findings, to account for various environment conditions related to 
     <img src='screenshots/AUG_1.PNG' width=300>&nbsp;&nbsp;&nbsp;&nbsp;
     <img src='screenshots/AUG_2.PNG' width=300>
 </p>
-Figure: RGB to Gray & Brightness Augmentations
+Figure 5: RGB to Gray & Brightness Augmentations
 
 
 
@@ -137,7 +147,7 @@ Figure: RGB to Gray & Brightness Augmentations
 |experiment2|[config](experiments/exp2-rmspropopt-lr-steps/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps| 1.056 |
 
 ![Eval](screenshots/Loss_exp1_exp2.jpg)
-Figure: Experiment1 & Experiment2 Loss
+Figure 6: Experiment1 & Experiment2 Loss
 
 ![Eval](screenshots/exp2_eval_output.jpg)
-Figure: Experiment2 Evaluation Output
+Figure 7: Experiment2 Evaluation Output
