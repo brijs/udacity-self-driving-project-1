@@ -125,6 +125,9 @@ Given the high regularization loss and plateauing `total_loss`, I experimented w
 #### Learning Rate, warmup_window & total_steps
 I experimented with different `warmup_steps` and observed that reducing the warmup window as well as `total_steps` didn't impact the final `total_loss`, while it helped with reducing the overall training time
 
+![Eval](screenshots/LearningRate.PNG.jpg)
+Figure 5: Learning Rates across experiments
+
 #### Aspect ratios for Anchor generator
 Based on findings during EDA, I included additional *aspect ratios* in the Anchor generator in order to potentially converge localization (bounding boxes) faster. Of course, this adds to the computation, so only added a few more.
 
@@ -139,7 +142,7 @@ Based on EDA findings, to account for various environment conditions related to 
     <img src='screenshots/AUG_1.PNG' width=300>&nbsp;&nbsp;&nbsp;&nbsp;
     <img src='screenshots/AUG_2.PNG' width=300>
 </p>
-Figure 5: RGB to Gray & Brightness Augmentations
+Figure 6: RGB to Gray & Brightness Augmentations
 
 #### Batch size
 I increased batch size to 4 (from 2) to evaluate how it impacts accuracy & loss & training times. But, the `total_loss` had already improved with the other adjustments, that there was no noticeable impact due to batch size. 
@@ -154,7 +157,7 @@ I increased batch size to 4 (from 2) to evaluate how it impacts accuracy & loss 
 |experiment2|[config](experiments/exp2-rmspropopt-batch-lr-steps/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps| 1.056 |
 
 ![Eval](screenshots/Loss_exp1_exp2.jpg)
-Figure 6: Experiment1 & Experiment2 Loss
+Figure 7: Experiment1 & Experiment2 Loss
 
 ![Eval](screenshots/exp2_eval_output.jpg)
-Figure 7: Experiment2 Evaluation Output
+Figure 8: Experiment2 Evaluation Output
