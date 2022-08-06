@@ -37,14 +37,6 @@ GEN_INFERENCE_VIDEO="python inference_video.py"
 ### Experiments
 3 experiments were run to incrementally try improvements by editing the `pipeline.config` files (especially the `train_config`) for each experiment. 
 
-Here's a summary:
-|Experiment | Config | Description of changes |
-|---|---|---|
-|reference|[config](experiments/reference/pipeline.cfg)|default pipeline config|
-|experiment0 |[config](experiments/exp0-adamopt-aspectratio-augment/pipeline.config)|Adam Optimizer, additional aspect ratios & augmentations|
-|experiment1|[config](experiments/exp1-rmspropopt/pipeline.cfg)|same as exp0 + switch to RMSProp optimizer|
-|experiment2|[config](experiments/exp2-rmspropopt-lr-steps/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps|
-
 You can follow the steps below to re-run the experiments (or create your own).
 
 ```bash
@@ -93,5 +85,52 @@ ${GEN_INFERENCE_VIDEO} --labelmap_path label_map.pbtxt \
 ### Cross-Validation
 
 ## Training
+
+See below for a summary of all the training runs. **Experiment2** yielded the best performance.
+
 ### Reference experiment
+
+Some observations:
+ - The `total_loss` jumped up signicantly to 350 after the warmup window (250 steps). This looks to be due to the sudden jump in the `regularization_loss` at the `learning rate` transition point from warmup to cosine decay.
+ - After 2500 steps, the `total_loss` plateaued at ~247.
+ 
+ This chart below shows the **reference** run (and also **experiment0** run, with Adam optimizer & additional aspect ratios. (*Note - experiment0 is included alongside reference to indicate the improvement. experiment1 and 2 are an order(or 2) of mangitude better so they are plotted separately below*)
+
+![Eval](screenshots/Loss_ref_exp0.jpg)
+Figure: Reference & Experiment0 Loss
+
+![Eval](screenshots/ref_eval_output.jpg)
+Figure: Reference run Evaluation output
+
 ### Improvements
+
+#### Optimizer
+Given the high regularization loss and plateauing total_loss, I experimented with 3 optimizers - Momentum, Adam & RMSProp. **Adam** (experiment0) improved the overall performance, but the `total_loss` was still relatively high (~25). **RMSProp** yielded the best performance(lowest `total_loss`) at it's default setting.
+
+#### Learning Rate, warmup_window & total_steps
+I experimented with different `warmup_steps` and observed that reducing the warmup window as well as `total_steps` didn't impact `total_loss`, while it helped with reducing the overall training time
+
+#### Aspect ratios for Anchor generator
+Based on findings during EDA, I included additional *aspect ratios* in the Anchor generator in order to potentially converge localization (bounding boxes) faster
+
+#### Agumentation
+Based on EDA findings, to account for various environment conditions related to occlusion & ambient light, I tried the following:
+
+- Random Horizontal Flip
+- Random Crop
+- Random RGB to Gray
+- Random Adjust Brightness
+
+### Overall summary:
+|Experiment | Config | Summary of changes | Total Loss |
+|---|---|---|---|
+|reference|[config](experiments/reference/pipeline.cfg)|default pipeline config, with Momentum optimizer| 247.48 |
+|experiment0 |[config](experiments/exp0-adamopt-aspectratio-augment/pipeline.config)| Adam Optimizer, additional aspect ratios & augmentations|~25 |
+|experiment1|[config](experiments/exp1-rmspropopt/pipeline.cfg)|same as exp0 + switch to RMSProp optimizer| 1.09 |
+|experiment2|[config](experiments/exp2-rmspropopt-lr-steps/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps| 1.056 |
+
+![Eval](screenshots/Loss_exp1_exp2.jpg)
+Figure: Experiment1 & Experiment2 Loss
+
+![Eval](screenshots/exp2_eval_output.jpg)
+Figure: Experiment2 Evaluation Output
