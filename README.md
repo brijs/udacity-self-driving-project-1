@@ -97,6 +97,8 @@ Figure 2: Aspect Ratios Distribution
 
 ### Cross-Validation
 
+We use the **validation set** approach for cross validation - ie separating our training & validation data sets. To reduce the likelihood of "data leakage" during training, care should be taken to ensure that the validation set is NOT very close or similar to the training set. For example, this wasn't verified during the project, but it would be useful to verify that the validation and training dataset splits didn't include images from the same "track" or scene.
+
 ## Training
 
 See below for a summary of all the training runs (total 3). **Experiment2** yielded the best performance.
