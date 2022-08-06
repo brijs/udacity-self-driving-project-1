@@ -11,9 +11,10 @@ For this project, we trained **SSD Resnet 50 640x640 model**. The final trained 
 ## Setup
 
 The steps below describe how you may re-run the models to reproduce the results.
+
 **Note**
 1. These must be run form the root directory of this repository, after cloning.
-2. Follow steps in [README_starter.md](README_starter.md) to download data and pretrained Model.
+2. Follow steps in [README_starter.md](README_starter.md) to download data and pretrained Model ([direct link](http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz)).
 
 ### Data
 ```bash
@@ -37,12 +38,12 @@ GEN_INFERENCE_VIDEO="python inference_video.py"
 3 experiments were run to incrementally try improvements by editing the `pipeline.config` files (especially the `train_config`) for each experiment. 
 
 Here's a summary:
-|Experiment | Description of changes |
-|---|---|
-|reference|default pipeline config|
-|experiment0|Adam Optimizer, additional aspect ratios & augmentations|
-|experiment1|same as exp0 + switch to RMSProp optimizer|
-|experiment2|same as exp1 + adjust learning rates & number of steps|
+|Experiment | Config | Description of changes |
+|---|---|---|
+|reference|[config](experiments/reference/pipeline.cfg)|default pipeline config|
+|experiment0 |[config](experiments/exp0-adamopt-aspectratio-augment/pipeline.config)|Adam Optimizer, additional aspect ratios & augmentations|
+|experiment1|[config](experiments/exp0-adamopt-aspectratio-augment/pipeline.config)|same as exp0 + switch to RMSProp optimizer|
+|experiment2|[config](experiments/exp1-rmspropopt/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps|
 
 You can follow the steps below to re-run the experiments (or create your own).
 
