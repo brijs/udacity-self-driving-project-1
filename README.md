@@ -42,8 +42,8 @@ Here's a summary:
 |---|---|---|
 |reference|[config](experiments/reference/pipeline.cfg)|default pipeline config|
 |experiment0 |[config](experiments/exp0-adamopt-aspectratio-augment/pipeline.config)|Adam Optimizer, additional aspect ratios & augmentations|
-|experiment1|[config](experiments/exp0-adamopt-aspectratio-augment/pipeline.config)|same as exp0 + switch to RMSProp optimizer|
-|experiment2|[config](experiments/exp1-rmspropopt/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps|
+|experiment1|[config](experiments/exp1-rmspropopt/pipeline.cfg)|same as exp0 + switch to RMSProp optimizer|
+|experiment2|[config](experiments/exp2-rmspropopt-lr-steps/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps|
 
 You can follow the steps below to re-run the experiments (or create your own).
 
