@@ -6,7 +6,10 @@ The goal of this project is to train an **Object Detection** Network for the pur
 
 For this project, we trained **SSD Resnet 50 640x640 model**. The final trained model ([experiment2](experiments/exp2-rmspropopt-lr-steps/)) yeilded this annotated video.
 
-<img src="experiments/exp2-rmspropopt-lr-steps/experiment2_animation.gif" width="400" >
+<p align="center">
+    <img src="experiments/exp2-rmspropopt-batch-lr-steps/experiment2_animation.gif" width="500" >
+</p>
+Video: Generated Inference Video based on Experiment2
 
 ## Setup
 
@@ -87,7 +90,7 @@ Visualizing random images showed the variability of the environmnet and objects 
 ![Random Images](screenshots/EDA_1.PNG)
 Figure 1: Random Images from dataset
 
-Vehicle boxes were in a variety of sizes depending on the vehicle itself(large trucks vs small cars) as well as the proximity of the vehicle. In order to inform the choise of aspect ratios to use for initializing anchor boxes, I generated a **distribution (histogram)** of aspect ratios across a random sample of the data. 
+Vehicle boxes were in a variety of sizes depending on the vehicle itself(large trucks vs small cars) as well as the proximity of the vehicle. In order to inform the choice of aspect ratios to use for initializing anchor boxes, I generated a **distribution (histogram)** of **aspect ratios** across a random sample of the data. 
 
 ![Aspect Ratios Histogram](screenshots/aspect_ratio_histogram.jpg)
 Figure 2: Aspect Ratios Distribution
@@ -96,15 +99,15 @@ Figure 2: Aspect Ratios Distribution
 
 ## Training
 
-See below for a summary of all the training runs. **Experiment2** yielded the best performance.
+See below for a summary of all the training runs (total 3). **Experiment2** yielded the best performance.
 
 ### Reference experiment
 
 Some observations:
- - The `total_loss` jumped up signicantly to 350 after the warmup window (250 steps). This looks to be due to the sudden jump in the `regularization_loss` at the `learning rate` transition point from warmup to cosine decay.
- - After 2500 steps, the `total_loss` plateaued at ~247.
+ - The `total_loss` jumped up signicantly to ~350 after the warmup window (250 steps). This looks to be due to the sudden jump in the `regularization_loss` at the `learning rate` transition point from warmup to cosine decay.
+ - After 2500 steps (end of training), the `total_loss` plateaued at ~247.
  
- This chart below shows the **reference** run (and also **experiment0** run, with Adam optimizer & additional aspect ratios. (*Note - experiment0 is included alongside reference to indicate the improvement. experiment1 and 2 are an order(or 2) of mangitude better so they are plotted separately below*)
+ This chart below shows the **reference** run (and also **experiment0** run, with Adam optimizer & additional aspect ratios. (*Note - experiment0 is included alongside reference to indicate the improvement. Subsequent experiments i.ie experiment1 and 2 are an order(or 2) of mangitude better so they are plotted separately below for better visualization*)
 
 ![Eval](screenshots/Loss_ref_exp0.jpg)
 Figure 3: Reference & Experiment0 Loss
@@ -115,16 +118,16 @@ Figure 4: Reference run Evaluation output
 ### Improvements
 
 #### Optimizer
-Given the high regularization loss and plateauing total_loss, I experimented with 3 optimizers - Momentum, Adam & RMSProp. **Adam** (experiment0) improved the overall performance, but the `total_loss` was still relatively high (~25). **RMSProp** yielded the best performance(lowest `total_loss`) at it's default setting.
+Given the high regularization loss and plateauing `total_loss`, I experimented with **3 optimizers** - Momentum, Adam & RMSProp. **Adam** (experiment0) improved the overall performance, but the `total_loss` was still relatively high (~25). **RMSProp** yielded the best performance(lowest `total_loss`) at it's default setting.
 
 #### Learning Rate, warmup_window & total_steps
-I experimented with different `warmup_steps` and observed that reducing the warmup window as well as `total_steps` didn't impact `total_loss`, while it helped with reducing the overall training time
+I experimented with different `warmup_steps` and observed that reducing the warmup window as well as `total_steps` didn't impact the final `total_loss`, while it helped with reducing the overall training time
 
 #### Aspect ratios for Anchor generator
-Based on findings during EDA, I included additional *aspect ratios* in the Anchor generator in order to potentially converge localization (bounding boxes) faster
+Based on findings during EDA, I included additional *aspect ratios* in the Anchor generator in order to potentially converge localization (bounding boxes) faster. Of course, this adds to the computation, so only added a few more.
 
 #### Agumentation
-Based on EDA findings, to account for various environment conditions related to occlusion & ambient light, I tried the following:
+Based on EDA findings, to account for various environment conditions related to occlusion & ambient light, I tried the following (see screenshots below):
 
 - Random Horizontal Flip
 - Random Crop
@@ -136,6 +139,8 @@ Based on EDA findings, to account for various environment conditions related to 
 </p>
 Figure 5: RGB to Gray & Brightness Augmentations
 
+#### Batch size
+I increased batch size to 4 (from 2) to evaluate how it impacts accuracy & loss & training times. But, the `total_loss` had already improved with the other adjustments, that there was no noticeable impact due to batch size. 
 
 
 ### Overall summary:
