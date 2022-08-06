@@ -120,6 +120,13 @@ Based on EDA findings, to account for various environment conditions related to 
 - Random Crop
 - Random RGB to Gray
 - Random Adjust Brightness
+<p align="center">
+    <img src='screenshots/AUG_1.PNG' width=300>&nbsp;&nbsp;&nbsp;&nbsp;
+    <img src='screenshots/AUG_2.PNG' width=300>
+</p>
+Figure: RGB to Gray & Brightness Augmentations
+
+
 
 ### Overall summary:
 |Experiment | Config | Summary of changes | Total Loss |
