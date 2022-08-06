@@ -4,7 +4,7 @@ The goal of this project is to train an **Object Detection** Network for the pur
 
 **Object Detection** is a very important component of self-driving car systems in understanding the environment (Perception) around the car, including both static (roads, signs) and dynamic objects (vehicles, pedestrians, bicyles etc). Accuracy & speed (especially at inference time) of the model is critical given the saftey concerns for a self-driving car.
 
-For this project, we trained **SSD Resnet 50 640x640 model**. The final trained model ([experiment2](experiments/exp2-rmspropopt-lr-steps/)) yeilded this annotated video.
+For this project, we trained **SSD Resnet 50 640x640 model**. The final trained model ([experiment2](experiments/exp2-rmspropopt-batch-lr-steps/)) yeilded this annotated video.
 
 <p align="center">
     <img src="experiments/exp2-rmspropopt-batch-lr-steps/experiment2_animation.gif" width="500" >
@@ -52,7 +52,7 @@ EXP_DIR=/home/workspace/experiments/experiment0
 mkdir -p ${EXP_DIR}
 
 # Config File & Edit as needed - This step is optional as the
-# updated config files are under each expirmentX/ directory
+# updated config files are under each experimentX/ directory
 # python edit_config.py --train_dir ${DATA_DIR}/train/ --eval_dir ${DATA_DIR}/val/ \
 #                       --batch_size 2 --checkpoint ${PRETRAINED_MODEL} \
 #                       --label_map /home/workspace/experiments/label_map.pbtxt
@@ -151,7 +151,7 @@ I increased batch size to 4 (from 2) to evaluate how it impacts accuracy & loss 
 |reference|[config](experiments/reference/pipeline.cfg)|default pipeline config, with Momentum optimizer| 247.48 |
 |experiment0 |[config](experiments/exp0-adamopt-aspectratio-augment/pipeline.config)| Adam Optimizer, additional aspect ratios & augmentations|~25 |
 |experiment1|[config](experiments/exp1-rmspropopt/pipeline.cfg)|same as exp0 + switch to RMSProp optimizer| 1.09 |
-|experiment2|[config](experiments/exp2-rmspropopt-lr-steps/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps| 1.056 |
+|experiment2|[config](experiments/exp2-rmspropopt-batch-lr-steps/pipeline.cfg)|same as exp1 + adjust batch size, learning rates & number of steps| 1.056 |
 
 ![Eval](screenshots/Loss_exp1_exp2.jpg)
 Figure 6: Experiment1 & Experiment2 Loss
